@@ -1,0 +1,265 @@
+\documentclass[10pt]{article}
+\usepackage{NotesTeX}
+\usepackage{lipsum}
+\usepackage[perpage]{footmisc}
+\usepackage{epstopdf}
+\usepackage{epsfig}
+\usepackage{nomencl}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{mathbbol}
+\usepackage{tikz}
+\usetikzlibrary{3d,matrix,shapes,shapes.geometric,arrows,positioning,chains,backgrounds}
+\makeatletter % from https://tex.stackexchange.com/a/48776/121799
+\tikzstyle{startstop} = [rectangle, text width=3cm, minimum   height=1cm,text centered, draw=black, fill=red!30]
+\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, text width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!30]
+\tikzstyle{process} = [rectangle, text width=3cm, minimum height=1cm,    text centered, draw=black, fill=orange!30]
+\tikzstyle{decision} = [diamond, text width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\usepackage{dutchcal}
+\usepackage{calligra}
+
+\DeclareMathAlphabet{\mathcalligra}{T1}{calligra}{m}{n}
+\DeclareFontShape{T1}{calligra}{m}{n}{<->s*[2.2]callig15}{}
+
+\usepackage{mathtools}
+\usepackage{bbold}
+\usepackage{amsmath,array}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{tabularx}
+\usepackage{slashed}
+\usepackage{nicefrac}
+\usepackage{tikz-feynman}
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage{cjhebrew}
+\usepackage{enumitem}
+\usepackage{listings}
+\lstset{language=[90]Fortran,
+  basicstyle=\ttfamily,
+  keywordstyle=\color{red},
+  commentstyle=\color{green},
+  morecomment=[l]{!\ }% Comment only with space after !
+}
+
+\definecolor{light-gray}{gray}{0.95}
+\definecolor{blue}{HTML}{4169E1}
+\definecolor{red}{HTML}{DC143C}
+\definecolor{green}{HTML}{2E8B57}
+\definecolor{black}{HTML}{000000}
+\definecolor{g1}{HTML}{A9A9A9}
+\definecolor{g2}{HTML}{696969}
+\definecolor{g3}{HTML}{7F7F7F}
+\definecolor{g4}{HTML}{D3D3D3}
+
+\newcounter{bsp}[section]\setcounter{bsp}{0}
+\renewcommand{\thebsp}{\arabic{section}.\arabic{bsp}}
+
+\newenvironment{calc}[2][]{%
+\refstepcounter{bsp}%
+\ifstrempty{#1}%
+{\mdfsetup{%
+frametitle={%
+\tikz[baseline=(current bounding box.east),outer sep=0pt]
+\node[anchor=east,rectangle,fill=green]
+{\strut\scriptsize calculation flow~};}}
+}%
+{\mdfsetup{%
+frametitle={%
+\tikz[baseline=(current bounding box.east),outer sep=0pt]
+\node[anchor=east,rectangle,fill=green]
+{\strut\scriptsize calculation flow~#1};}}%
+}%
+\mdfsetup{innertopmargin=10pt,innerbottommargin=10pt,linecolor=green,%
+linewidth=2pt,topline=true,%
+frametitleaboveskip=\dimexpr-\ht\strutbox\relax
+}
+\begin{mdframed}[]\relax%
+\label{#2}}{\end{mdframed}}
+
+\newenvironment{code}[2][]{%
+\refstepcounter{bsp}%
+\ifstrempty{#1}%
+{\mdfsetup{%
+frametitle={%
+\tikz[baseline=(current bounding box.east),outer sep=0pt]
+\node[anchor=east,rectangle,fill=red]
+{\strut\scriptsize \small{010101}~};}}
+}%
+{\mdfsetup{%
+frametitle={%
+\tikz[baseline=(current bounding box.east),outer sep=0pt]
+\node[anchor=east,rectangle,fill=red]
+{\strut\scriptsize \small{010101}~#1};}}%
+}%
+\mdfsetup{innertopmargin=10pt,innertopmargin=10pt,linecolor=red,%
+linewidth=2pt,topline=true,%
+frametitleaboveskip=\dimexpr-\ht\strutbox\relax
+}
+\begin{mdframed}[]\relax%
+\label{#2}}{\end{mdframed}}
+
+\newcommand{\xdownarrow}[1]{%
+  {\left\downarrow\vbox to #1{}\right.\kern-\nulldelimiterspace}
+}
+
+\newcommand*{\mprime}{^{\prime}\mkern-1.2mu}
+\newcommand*{\mdprime}{^{\prime\prime}\mkern-1.2mu}
+\newcommand*{\mtprime}{^{\prime\prime\prime}\mkern-1.2mu}
+\newcommand*{\ethr}{e_\text{th}}
+\newcommand{\black}[1]{\textcolor{black}{#1}}
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+\newcommand{\green}[1]{\textcolor{green}{#1}}
+\newcommand{\caf}{\text{\cjRL{b}}}
+\newcommand{\he}{\ket{^3\text{He}}}
+\newcommand{\fin}{\hat{\mathcal{O}}_{pq}\otimes\ket{^3\text{He}}}
+\newcommand{\hes}{${}^3$He}
+\newcommand{\ls}{\ve{L}\cdot\ve{S}}
+\newcommand{\cfg}{\texttt{cfg}}
+\newcommand{\bv}{\texttt{bv}}
+\newcommand{\as}{a_s}
+\newcommand{\at}{a_t}
+\newcommand{\ecm}{E_\textrm{\small c.m.}}
+\newcommand{\dq}{\mbox{d\hspace{-.55em}$^-$}}
+\newcommand{\mpis}{$m_\pi=137~${\small MeV}}
+\newcommand{\mpim}{$m_\pi=450~${\small MeV}}
+\newcommand{\mpil}{$m_\pi=806~${\small MeV}}
+\newcommand{\muh}{\mu_{^3\text{\scriptsize He}}}
+\newcommand{\mut}{\mu_{^3\text{\scriptsize H}}}
+\newcommand{\mud}{\mu_\text{\scriptsize D}}
+\newcommand{\pode}{\beta_{\text{\scriptsize D},\pm1}}
+\newcommand{\poh}{\beta_{^3\text{\scriptsize He}}}
+\newcommand{\pot}{\beta_{^3\text{\scriptsize H}}}
+\newcommand{\com}[1]{{\scriptsize \sffamily \bfseries \color{red}{#1}}}
+\newcommand{\eg}{\textit{e.g.}\;}
+\newcommand{\ie}{\textit{i.e.}\;}
+\newcommand{\etc}{\textit{etc.}\;}
+\newcommand{\cf}{\textit{cf.}\;}
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\la}{\label}
+\newcommand{\ber}{\begin{eqnarray}}
+\newcommand{\eer}{\end{eqnarray}}
+\newcommand{\nn}{\nonumber}
+\newcommand{\bs}[1]{\ensuremath{\boldsymbol{#1}}}
+\newcommand{\bea}{\begin{eqnarray}}
+\newcommand{\eea}{\end{eqnarray}}
+\newcommand{\beq}{\begin{align}}
+\newcommand{\eeq}{\end{align}}
+\newcommand{\bk}{\bs k}
+\newcommand{\bt}{B_{^{3}\text{H}}}
+\newcommand{\bh}{B_{^{3}\text{He}}}
+\newcommand{\bd}{B_\text{D}}
+\newcommand{\ba}{B_\alpha}
+\newcommand{\rgm}{$\mathbb{R}$GM}
+\newcommand{\parg}[1] {\paragraph*{-\,\textit{#1}\,-}}
+\newcommand{\nopi}{\pi\hspace{-6pt}/}
+\newcommand{\ve}[1]{\ensuremath{\boldsymbol{#1}}}
+\newcommand{\xvec}{\bs{x}}
+\newcommand{\rvec}{\bs{r}}
+\newcommand{\sgve}{\ensuremath{\boldsymbol{\sigma}}}
+\newcommand{\tave}{\ensuremath{\boldsymbol{\tau}}}
+\newcommand{\na}{\nabla}
+%\newcommand{\bra}[1] {\left\langle~#1~\right|}
+%\newcommand{\ket}[1] {\left|~#1~\right\rangle}
+\newcommand{\bet}[1] {\left|#1\right|}
+\newcommand{\overlap}[2] {\left\langle\,#1\,\left|\,#2\,\right.\right\rangle}
+\newcommand{\me}[3] {\left\langle\,#1\,\left|\left.\,#2\,\right|\,#3\,\right.\right\rangle}
+\newcommand{\redme}[3] {\left\langle\,#1\,\middle|\right|\,#2\,\left|\middle|\,#3\,\right\rangle}
+%\newcommand{\lam}[1]{$\Lambda=#1~$fm$^{-1}$}\newcommand{\tx}{\tilde{x}}
+\newcommand{\eftnopi}{\mbox{EFT($\slashed{\pi}$)}}
+\newcommand{\threej}[6]{\ensuremath{\begin{pmatrix}#1 & #2 & #3\\#4&#5&#6 \end{pmatrix}}}
+\newcommand{\clg}[6]{\ensuremath{\left\langle\left.\,#1#2\,;\,#3#4\,\right\vert\right.\left.\,#5#6\,\right\rangle}}
+\newcommand{\re}[1] {\mathcal{R}\left[#1\right]}
+\newcommand{\im}[1] {\mathcal{I}\left[#1\right]}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\eqr}[1]{eq.~\eqref{#1}}
+\newcommand{\figref}[1]{fig.~\ref{#1}}
+\newcommand{\tabref}[1]{table~\ref{#1}}
+\newcommand{\ccite}[1]{ref.~\cite{#1}}
+%\newcommand{\op}[1] {\hat{\mathcal{O}}_{\text{\small #1}}}
+\newcommand{\fkt}[1]{\colorbox{light-gray}{\texttt{#1}}}
+%\newcommand{\var}[1]{\small\textcolor{blue}{\texttt{#1}}}
+%\newcommand{\comm}[1]{\small\textcolor{green}{\texttt{#1}}}
+\newcommand{\ham}{\mathbb{H}}
+\newcommand{\nor}{\mathbb{N}}
+
+\titleformat{\part}[hang]{{\thispagestyle{plain}}\Huge\bfseries}{\marginnote{
+\begin{tcolorbox}
+[width=\marginparwidth/2,height=\marginparwidth/3,colback=red,
+colframe=white,center title,
+text fill]
+\begin{center}
+{\color{white}\thepart}
+\end{center}
+\end{tcolorbox}
+}[-1.0in]}{0in}{\normalsize\bfseries}
+
+
+
+\usepackage{pifont}
+\renewcommand\thefootnote{\ding{\numexpr171+\value{footnote}}}
+\let\endtitlepage\relax
+
+\title{{\Huge Celestial dynamics with hyperspherical coordinates}\\
+{\small{With stress on regularization and the relation to the quantum few-body problem}}
+
+\begin{center}{\small
+\begin{minipage}[c]{.75\textwidth}
+\vspace{2.5cm}
+\textsl{``It does not take long, not a lot of words to explain the physical principles of a violin.
+To furnish the instrument and to learn to evoke enchanting sounds with it takes years, a lifetime.
+While mastering the manufacturing process demands familiarity with the playing, neither of those
+two depend upon a deep theoretical understanding.''
+}\\
+\vspace{-.5cm}
+\begin{flushright}
+{\tiny(unknown source)}
+\end{flushright}
+\end{minipage}}
+\end{center}
+}
+
+\author{Johannes Kirscher
+%\footnote{\href{https://srmap.edu.in/faculty/dr-johannes-kirscher/}{\textit{Author Website}}}
+}
+
+\affiliation{Starfleet Academy, Department of pre-spore quantum science\\ {\small Regula I Space Laboratory}\\ {\small Regula Mutara sector, Beta Quadrant}}
+\emailAdd{kirscjo@gmail.com}
+
+\makenomenclature
+
+\begin{document}
+  \maketitle
+  \flushbottom
+  \newpage
+  \pagestyle{fancynotes}
+
+
+\part{Formulation of the celestial n-body problem}
+
+\section{From single to Jacobi to hyperspherical coordinates}
+
+The intuitive way to specify a state of $N$ point masses $m_i$ without internal degrees of freedom--think of spin, color, flavor, isospin, \&c.--is to
+assign three cartesian components for each such that the Hamiltonian reads
+\be
+\ham = \sum_{i=1}^N \frac{\ve{p}_i^2}{2m_i} + \sum_{i<j} V(\ve{r}_{ij}) = \sum_{i=1}^N \frac{\ve{p}_i^2}{2m_i} + \sum_{i<j} V(\ve{r}_i - \ve{r}_j)
+\ee
+\nomenclature{$\ve{r}_i$}{Psosition of particle $i$}
+
+\section{The Hamiltonian}
+
+\section{The equations of motion}
+
+\section{Regularization of the equations of motion}
+
+\section{Numerical solution}
+
+\newpage
+\printnomenclature
+\nocite{*}
+\bibliographystyle{ieeetr}
+\bibliography{bib.bib}
+\end{document}
