@@ -77,7 +77,8 @@
 % ------------------------------------------ LEFT COLUMN ------------------------------------------
 \begin{paracol}{2}
 
-\subsection*{\small \today}
+\subsection*{\small Aperitif}
+
 \tqt{The structure of dynamical equations is desceptively simple, obfuscating the marvelous phenomena
 which they point us to in nature decades and conturies post their conception.}
 
@@ -198,6 +199,92 @@ Subsequently, derive the equations of motion:
 \end{align}
 Ecce, these six equations will look quite ugly but thankfully it will be the computer
 who will do the heavy lifting. 
+\end{bclogo}
+
+\newpage
+
+\section*{\small Primo piatto}
+
+For the general $\qty(N-M)$-body
+\nomenclature{$N,M,A$}{Of $N$ objects, the orbits of $M$ are fixed which leaves $N-M:=A$ trajectories for which we seek
+a solution.}
+problem, the equations of motion are conveniently(?) written in matrix form. The vectors $\vb{y}$ and $\vb{f}$
+have $2\times\dim_{\text{space}}\times A$
+components and we chose the letters to conform with~\cite{Schmid1990}.
+Also note, that in the summation over $j$ we need to consider all objects, i.e., the constrained ones, too, because they
+still exert a force on the unconstrained masses.
+For $\dim_{\text{space}}=3$, the equations of motion read explicitly
+
+\begin{align}\tag{EQM}
+\renewcommand{\arraystretch}{2.4}
+    \dv{\vb{y}}{t}
+    :=
+    \dv{t}
+    \mqty*(r_{x1}\\r_{y1}\\r_{z1}\\\vdots\\r_{xA}\\r_{yA}\\r_{zA}\\p_{x1}\\p_{y1}\\p_{z1}\\\vdots\\p_{xA}\\p_{yA}\\p_{zA})
+    =
+    \mqty*(
+    \frac{\partial \textfrak{H}}{\partial p_{x1}}\\
+    \\
+    \\
+    \vdots\\
+    \\
+    \\
+    \frac{\partial \textfrak{H}}{\partial p_{zA}}\\
+    -\frac{\partial \textfrak{H}}{\partial r_{x1}}\\
+    \\
+    \\
+    \vdots\\
+    \\
+    \\
+    -\frac{\partial \textfrak{H}}{\partial r_{zA}}\\
+    )
+    =
+    \mqty*(
+    \nicefrac{p_{x1}}{m_1}\\
+    \nicefrac{p_{y1}}{m_1}\\
+    \nicefrac{p_{z1}}{m_1}\\
+    \vdots\\
+    \nicefrac{p_{xN}}{m_A}\\
+    \nicefrac{p_{yN}}{m_A}\\
+    \nicefrac{p_{zN}}{m_A}\\
+    \gamma m_1\sum_{j\neq 1}^N\frac{\qty(r_{x1}-r_{xj})m_j}{\vqty{\vb{r}_1-\vb{r}_j}^3}\\
+    \gamma m_1\sum_{j\neq 1}^N\frac{\qty(r_{y1}-r_{yj})m_j}{\vqty{\vb{r}_1-\vb{r}_j}^3}\\
+    \\
+    \vdots\\
+    \\
+    \\
+    \gamma m_N\sum_{j\neq A}\frac{\qty(r_{zA}-r_{zj})m_j}{\vqty{\vb{r}_A-\vb{r}_j}^3}
+    )
+    =
+    \mqty*(
+    \nicefrac{y_{3A+1}}{m_1}\\
+    \nicefrac{y_{3A+2}}{m_1}\\
+    \nicefrac{y_{3A+3}}{m_1}\\  
+    \\
+    \\
+    \vdots\\
+    \\
+    \gamma m_1\sum_{j\neq 1}^N\frac{\qty(y_{1}-y_{3j-2})m_j}{\vqty{\qty(y_{1}-y_{3j-2})^2+\qty(y_{2}-y_{3j-1})^2+\qty(y_{3}-y_{3j})^2}^{3/2}}\\
+    \\
+    \\
+    \vdots\\
+    \\
+    \\
+    \gamma m_1\sum_{j\neq A}\frac{\qty(y_{3A}-y_{3j})m_j}{\vqty{\qty(y_{3A-2}-y_{3j-2})^2+\qty(y_{3A-1}-y_{3j-1})^2+\qty(y_{3A}-y_{3j})^2}^{3/2}}\\
+    )
+    =:
+    \vb{f}\qty(\vb{y},t)
+\end{align}
+
+\begin{bclogo}[logo={\bccrayon},arrondi=0.1]{}
+Obtain $\vb{y}(t)$ for a temporal grid $t\in\qty{h,2h,\ldots,nh}$
+using a computer program which takes as input:
+\begin{itemize}
+    \item the masses $m_i$ of the $N$ objects,
+    \item the initial positions $\vb{r}_i(0)$ and velocities $\dot{\vb{r}}_i(0)$ of the $A$ unconstrained objects,
+    \item the fixed orbits $\qty{\vb{y}_i(t)}$ with $i\in\qty{3A+1,\ldots,}$ of the $M$ constrained objects, and
+    \item the time-grid parameters $h$ and $n$.
+\end{itemize}
 \end{bclogo}
 
 \newpage
